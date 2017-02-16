@@ -1,5 +1,6 @@
 # AutoData
 
+Manage test data and environment configuration for automated test projects.
 
 ## Installation
 
@@ -18,14 +19,22 @@ Or install it yourself as:
     $ gem install auto_data
 
 ## Usage
+
+YML files are needed to define data.
+
+CONF_DATA_TEST  : key section to use from YML file for test data
+CONF_ENV_TEST   : key section to use from YML file for environment data
+
 ```ruby
     require 'auto_data'
-    #Define the global key variables
+    #Define global key variables
     ENV["CONF_DATA_TEST"] = "manager"
     ENV["CONF_ENV_TEST"] = "testing"
 
+    #Create objects
     login=AutoData::Data.new
     env = AutoData::Env.new
+
     #Set path file that contains value details
     login.load('config/data/users.yml')
     env.load('config/data/environment.yml')
@@ -37,8 +46,6 @@ Or install it yourself as:
 
     #environment
     puts env.base_url     #=> http://testing.sample.com
-
-
 
 ```
 
