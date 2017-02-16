@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "auto_data"
   spec.version       = AutoData::VERSION
   spec.authors       = ["Alejandro Aguilar"]
-  spec.email         = ["andrade@mx1.ibm.com"]
+  spec.email         = ["alekx.aguilar@gmail.com"]
 
   spec.summary       = %q{Manage Test and Configuration data. }
   spec.description   = %q{Manage Test and configuration data for any automated test project.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/alekxaguilar/auto_data"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

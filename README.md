@@ -20,30 +20,48 @@ Or install it yourself as:
 ## Usage
 ```ruby
     require 'auto_data'
-
-    ENV["CONF_DATA_TEST"] = "user"
+    #Define the global key variables
+    ENV["CONF_DATA_TEST"] = "manager"
     ENV["CONF_ENV_TEST"] = "testing"
 
     login=AutoData::Data.new
     env = AutoData::Env.new
-
+    #Set path file that contains value details
     login.load('config/data/users.yml')
     env.load('config/data/environment.yml')
 
-    puts login.username
-    puts login.password
+    #Use the information as you have defined in the yml conf file
+    puts login.login      #=> manager_id
+    puts login.password   #=> zaq12wsx
+    puts login.username   #=> Batman
+
+    #environment
+    puts env.base_url     #=> http://testing.sample.com
+
 
 
 ```
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+###Switch global keys
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Switch global keys variable in runtime
 
+```ruby
+login.change_scope('customer')
+env.change_scope('uat')
+
+#Use the information as you have defined in the yml conf file
+puts login.login      #=> customer_id
+puts login.password   #=> zaq12wsx
+puts login.username   #=> Robin
+
+#environment
+puts env.base_url     #=> http://uat.sample.com
+
+```
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Alejandro Aguilar Andrade/auto_data. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/alekxaguilar/auto_data/issues. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
