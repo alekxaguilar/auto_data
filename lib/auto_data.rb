@@ -1,83 +1,68 @@
 require "auto_data/version"
 require "yaml"
 module AutoData
-  class Data
 
-      def initialize()
-        @data=ENV['CONF_DATA_TEST'].to_s.downcase
+
+  class Parse
+    #TODO: Make all methods private
+    def initialize()
+      @gvar=ENV['AUTO_DATA_PATH'].to_s
+
+      if @gvar.length == 0
+        raise Exception.new("Variable is not defined : ENV[\'AUTO_DATA_PATH\']")
       end
+      
+      @files = Hash.new
+      @file_count=0
 
-      def load(file)
-        #@file = YAML.load_file(file)
+      Dir[ @gvar + '/**/*.yml'].each { |file|  begin
+        @files['fullpath_' + @file_count.to_s]=file
+        @files['filename_' + @file_count.to_s]=file.split('/').last
+        @files['name_' + @file_count.to_s]=file.split('/').last.to_s.split('.').first
+        @file_count +=1
+        end}
 
-        @file = begin
-                  YAML.load(File.open(file))
-                rescue Exception => e  #ArgumentError
-                    puts "Could not parse auto objects files: #{e.message}"
-                    raise Exception.new('Could not parse auto objects files: #{e.message}')
-                end
-        #self
+
+    end
+
+    def load(file)
+
+      if @files.value?(file).nil?
+        raise Exception.new("File name is not found #{file}")
       end
-      #Change environment key path
-      def change_scope(data)
-        @data=data.to_s.downcase
-      end
-
-      #Change data key path
-      def chage_scope(data_key)
-        @data=data_key.to_s.downcase
-      end
-
-
-      def method_missing (method)
-
-        result= begin @file["#{@data}"]["#{method}"].nil? ? 'No Value Found' : @file["#{@data}"]["#{method}"]
-        rescue NoMethodError => e
-                  puts "valdio dick #{e.message}"
+      key_value= @files.key(file.to_s).to_s
+      key_2find = 'fullpath_' + key_value.split('_').last
+      local_file_path =nil
+      @files.each_pair {|key,value| begin
+        if key == key_2find
+          local_file_path = value
+          break
         end
+      end}
 
-        result
+      @file = begin
+              YAML.load_file(local_file_path)
+            rescue Exception => e
+                puts "Could not parse auto objects files: #{e.message}"
+                raise Exception.new('Could not parse auto objects files: #{e.message}')
+            end
+    end
+
+    def method_missing (filename, *args)
+      fileinfo= args[0].to_s.split('.')
+      if fileinfo.size !=2
+        raise Exception.new('Malformed structure, must be <AutoData.filename(\'key.subkey\')> ')
+      end
+      key= fileinfo[0]
+      subkey= fileinfo[1]
+      load(filename)
+      result= begin @file["#{key}"]["#{subkey}"].nil? ? 'No Value Found' : @file["#{key}"]["#{subkey}"]
+      rescue NoMethodError => e
+                puts "Couldn't find key #{subkey}.#{subkey} #{e.message}"
       end
 
-      #TODO: Validar si el cambio de data scope, es correcto (existe)
-      def valid_data?
+      result
+    end
 
-      end
-
-  end
-
-  class Env
-
-      def initialize()
-        @env = ENV['CONF_ENV_TEST'].to_s.downcase
-      end
-
-      def load(file)
-        #@file = YAML.load_file(file)
-        @file = begin
-                  YAML.load(File.open(file))
-                rescue Exception => e  #ArgumentError
-                    puts "Could not parse auto objects files: #{e.message}"
-                    e.exception('adsfasdfas')
-                end
-        #self
-      end
-      #Change environment key path
-      def change_scope(env)
-        @env=env.to_s.downcase
-      end
-
-      def method_missing (method)
-        result= begin @file["#{@env}"]["#{method}"].nil? ? 'No Value Found' : @file["#{@env}"]["#{method}"]
-        rescue NoMethodError => e
-                  puts "valdio dick #{e.message}"
-        end
-        result
-      end
-
-      #TODO: Validar si el cambio de env, es correcto (existe)
-      def valid_environment?
-
-      end
   end
 end
