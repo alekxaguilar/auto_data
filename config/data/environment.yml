@@ -1,0 +1,8 @@
+testing:
+  base_url: http://testing.sample.com
+
+uat:
+  base_url: http://uat.sample.com
+
+dev:
+  base_url: http://dev.sample.com

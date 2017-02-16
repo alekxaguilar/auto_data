@@ -1,0 +1,9 @@
+manager:
+  login: manager_id
+  password: zaq12wsx
+  username: Batman
+
+customer:
+  login: customer_id
+  password: zaq12wsx
+  username: Robin
