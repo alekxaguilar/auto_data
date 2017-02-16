@@ -22,50 +22,39 @@ Or install it yourself as:
 
 YML files are needed to define data.
 
-CONF_DATA_TEST  : key section to use from YML file for test data
-CONF_ENV_TEST   : key section to use from YML file for environment data
+<b>AUTO_DATA_PATH</b>  : Configuration data file path
 
+if you are working with cucumber include the next line to <b>env.rb</b> file
 ```ruby
+ENV["AUTO_DATA_PATH"] =  File.absolute_path('../..', File.dirname(__FILE__)).to_s
+```
+if not use using cucumber, place to the variable the project root path in your ruby class
+```ruby
+ENV["AUTO_DATA_PATH"] =  <<YML path files>>
+```
+### Sample
+```ruby
+
     require 'auto_data'
-    #Define global key variables
-    ENV["CONF_DATA_TEST"] = "manager"
-    ENV["CONF_ENV_TEST"] = "testing"
+    #Set configuration file path (Assumming that class is under root folder)
 
-    #Create objects
-    login=AutoData::Data.new
-    env = AutoData::Env.new
+    ENV["AUTO_DATA_PATH"] =  File.dirname(__FILE__)
 
-    #Set path file that contains value details
-    login.load('config/data/users.yml')
-    env.load('config/data/environment.yml')
+    #Create AutoData object
+    autodata = AutoData::Parse.new
 
-    #Use the information as you have defined in the yml conf file
-    puts login.login      #=> manager_id
-    puts login.password   #=> zaq12wsx
-    puts login.username   #=> Batman
+    #Print values  format:objectname.filename('key.subkey')
+    #Users file
+    puts test.users('mananger.login')        #=> manager_id
+    puts test.users('mananger.password')     #=> zaq12wsx
+    puts test.users('mananger.username')     #=> Batman
 
-    #environment
-    puts env.base_url     #=> http://testing.sample.com
+    #Environment file
+    puts test.environment('testing.base_url') #=> http://testing.sample.com
+
 
 ```
 
-###Switch global keys
-
-Switch global keys variable in runtime
-
-```ruby
-login.change_scope('customer')
-env.change_scope('uat')
-
-#Use the information as you have defined in the yml conf file
-puts login.login      #=> customer_id
-puts login.password   #=> zaq12wsx
-puts login.username   #=> Robin
-
-#environment
-puts env.base_url     #=> http://uat.sample.com
-
-```
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/alekxaguilar/auto_data/issues. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
