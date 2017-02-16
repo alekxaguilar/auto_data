@@ -4,25 +4,27 @@ module AutoData
 
 
   class Parse
-    #TODO: Make all methods private
+    #TODO: Change methods to private
     def initialize()
       @gvar=ENV['AUTO_DATA_PATH'].to_s
 
       if @gvar.length == 0
         raise Exception.new("Variable is not defined : ENV[\'AUTO_DATA_PATH\']")
       end
-      
+
       @files = Hash.new
       @file_count=0
 
       Dir[ @gvar + '/**/*.yml'].each { |file|  begin
+
         @files['fullpath_' + @file_count.to_s]=file
         @files['filename_' + @file_count.to_s]=file.split('/').last
-        @files['name_' + @file_count.to_s]=file.split('/').last.to_s.split('.').first
+        name =file.split('/').last.to_s.split('.').first
+        @files['name_' + @file_count.to_s]=name #file.split('/').last.to_s.split('.').first
+        @files["#{name}_key"]= "default_key"
         @file_count +=1
         end}
-
-
+        # puts @files
     end
 
     def load(file)
@@ -33,15 +35,17 @@ module AutoData
       key_value= @files.key(file.to_s).to_s
       key_2find = 'fullpath_' + key_value.split('_').last
       local_file_path =nil
-      @files.each_pair {|key,value| begin
-        if key == key_2find
-          local_file_path = value
-          break
-        end
-      end}
+      local_file_path= @files.values_at(key_2find)
+
+      # @files.each_pair {|key,value| begin
+      #   if key == key_2find
+      #     local_file_path = value
+      #     break
+      #   end
+      # end}
 
       @file = begin
-              YAML.load_file(local_file_path)
+              YAML.load_file(local_file_path[0].to_s)
             rescue Exception => e
                 puts "Could not parse auto objects files: #{e.message}"
                 raise Exception.new('Could not parse auto objects files: #{e.message}')
