@@ -1,4 +1,5 @@
 # AutoData
+[![Gem Version](https://badge.fury.io/rb/auto_data.svg)](https://badge.fury.io/rb/auto_data)
 
 Manage test data and environment configuration for automated test projects.
 
