@@ -1,3 +1,5 @@
+default_key: dev
+
 testing:
   base_url: http://testing.sample.com
 

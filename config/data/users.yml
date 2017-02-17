@@ -1,9 +1,11 @@
+default_key: manager
+
 manager:
   login: manager_id
-  password: zaq12wsx
+  password: zaq12wsx1
   username: Batman
 
 customer:
   login: customer_id
-  password: zaq12wsx
+  password: zaq12wsx2
   username: Robin
