@@ -4,7 +4,6 @@ module AutoData
 
 
   class Parse
-    #TODO: Change methods to private
     def initialize()
       @gvar=ENV['AUTO_DATA_PATH'].to_s
       if @gvar.length == 0
@@ -58,7 +57,8 @@ module AutoData
         subkey= fileinfo[1]
       end
 
-      load(filename)
+      private
+      load(filename)#call
       if use_default_key
         if @files.key?(filename.to_s + '_default_key')
           default_key = @files["#{filename}_default_key"]
@@ -69,12 +69,14 @@ module AutoData
           @file["#{default_key}"]["#{subkey}"].nil? ? 'No Value Found' : @file["#{default_key}"]["#{subkey}"]
         rescue NoMethodError => e
           puts "Couldn't find key #{subkey} using 'default_key' #{e.message}"
+          raise Exeption.new("Couldn't find key #{subkey} using 'default_key' #{e.message}")
         end
       else
         result= begin
           @file["#{key}"]["#{subkey}"].nil? ? 'No Value Found' : @file["#{key}"]["#{subkey}"]
         rescue NoMethodError => e
-          puts "Couldn't find key #{subkey}.#{subkey} #{e.message}"
+          puts "Couldn't find key #{key}.#{subkey} #{e.message}"
+          raise Exception.new("Couldn't find key #{key}.#{subkey} #{e.message}" )
         end
       end
 
