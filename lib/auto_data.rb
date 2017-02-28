@@ -57,8 +57,7 @@ module AutoData
         subkey= fileinfo[1]
       end
 
-      private
-      load(filename)#call
+     load(filename)#call
       if use_default_key
         if @files.key?(filename.to_s + '_default_key')
           default_key = @files["#{filename}_default_key"]
