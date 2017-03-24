@@ -21,15 +21,17 @@ Or install it yourself as:
 
 ## Usage
 
-YML files are needed to define data.
+YML files are needed as data source.
 
 <b>AUTO_DATA_PATH</b>  : Configuration data file path
 
-if you are working with cucumber include the next line to <b>env.rb</b> file
+if you are working with cucumber (or any hooks file support), include the next line to **env.rb** or **hook** file
+
 ```ruby
 ENV["AUTO_DATA_PATH"] =  File.absolute_path('../..', File.dirname(__FILE__)).to_s
 ```
-if not use using cucumber, place to the variable the project root path in your ruby class
+if do not use cucumber, place the nex line into the ruby class
+
 ```ruby
 ENV["AUTO_DATA_PATH"] =  <<YML path files>>
 ```
@@ -39,13 +41,14 @@ YML's [sample data](https://github.com/alekxaguilar/auto_data/tree/master/config
 Optional YML file structure:
 
 ```yml
-default_key: user_role2 #optional
+default_key: user_role2
 
 user_role1:
     userid: userid1
 user_role2:
     userid: userid2
 ```
+
 Code using custom key and sub-key words
 ```ruby
 
@@ -68,7 +71,8 @@ Code using custom key and sub-key words
 
 
 ```
-Using custom default_key option
+Using custom **default_key** option
+
 ```ruby
 
     #Create AutoData object
@@ -82,7 +86,7 @@ Using custom default_key option
 
 
 ```
-Changing default_key from code
+Changing default_key from 'manager' to 'customer' values in code from users.yml file
 
 ```ruby
 
